@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <limits>
 #include "operations.h"
 
 int main() {
@@ -13,22 +14,20 @@ int main() {
         std::cout << "Введите значение n (n > 40): ";
         std::cin >> n;
 
-        // Защита от "дурака"
-        if (std::cin.fail() || n <= 40) {
-            // Проверка на вещественное число
-            if (std::cin.peek() != '\n') {
-                std::cin.clear(); // Сбрасываем флаг ошибки
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Очищаем буфер ввода
-                std::cout << "Ошибка: n должно быть целым числом  строго больше 40." << std::endl;
-            }
-            else {
-                std::cout << "Ошибка: n должно быть целым числом" << std::endl;
-            }
+        // Проверка остатка ввода
+        if (std::cin.fail() || std::cin.peek() != '\n') {
+            std::cin.clear(); // Сбрасываем флаг ошибки
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Очищаем буфер ввода
+            std::cout << "Ошибка: введите корректное целое число, строго больше 40." << std::endl;
+        }
+        else if (n <= 40) {
+            std::cout << "Ошибка: n должно быть больше 40." << std::endl;
         }
         else {
             break; // Ввод корректен, выходим из цикла
         }
     }
+
     // Начальная емкость массива
     int capacity = 10; // Начальный размер
     int* number = new int[capacity];
